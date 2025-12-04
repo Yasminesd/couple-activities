@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Captain Paradox & Yiyo's Cozy Space</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1e5475;
+      --secondary: #547090;
+      --accent: #7C4DFF;
+      --light: #2A2F3B;
+      --dark: #121212;
+      --text: #E0E0E0;
+      --chat-bg: #1A1D21;
+      --msg-sent: #1e5475;
+      --msg-received: #2A2F3B;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #121212 0%, #1A1D21 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    /* Header Styles */
+    .header {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      margin-bottom: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      transform: rotate(30deg);
+    }
+    
+    .header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 5px;
+      position: relative;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+      position: relative;
+    }
+    
+    .couple-names {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+      position: relative;
+    }
+    
+    .name-tag {
+      padding: 5px 15px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      font-size: 0.9rem;
+    }
+    
+    /* User info */
+    .user-info {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 15px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+    
+    /* Main Content Layout */
+    .main-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    /* Categories Section */
+    .categories-section {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .categories-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .category-box {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      width: 100%;
+      min-height: 200px;
+      color: var(--text);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .category-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    }
+    
+    .category-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(30, 35, 42, 0.8);
+      border-radius: 12px;
+      z-index: 0;
+    }
+    
+    .category-box * {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .category-box h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* Add category section */
+    .add-category {
+      background: var(--light);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .add-category input {
+      flex: 1;
+      min-width: 150px;
+      padding: 0 12px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-sizing: border-box;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+    }
+    
+    /* Buttons unified style */
+    .btn {
+      height: 40px;
+      padding: 0 16px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    
+    .btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background: var(--accent);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: #6b3dff;
+    }
+    
+    .file-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      height: 40px;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    
+    .file-btn:hover {
+      background: var(--secondary);
+    }
+    
+    /* Input sections */
+    .input-section {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    
+    .input-section input,
+    .spinner-box select {
+      flex: 1;
+      padding: 0 12px;
+      height: 40px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-sizing: border-box;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+    }
+    
+    /* Item list */
+    .item-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .item-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      margin: 5px 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    
+    .item-list li:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .item-actions {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .complete-btn {
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 4px 8px;
+      font-size: 12px;
+      transition: background 0.2s;
+    }
+    
+    .complete-btn:hover {
+      background: #219653;
+    }
+    
+    .delete-btn {
+      background: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 4px 8px;
+      font-size: 12px;
+      transition: background 0.2s;
+    }
+    
+    .delete-btn:hover {
+      background: #962d22;
+    }
+    
+    .delete-cat-btn {
+      background: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 4px 8px;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    
+    .delete-cat-btn:hover {
+      background: #962d22;
+    }
+    
+    /* Spinner Section */
+    .spinner-section {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .spinner-box {
+      width: 100%;
+      text-align: center;
+      background: var(--light);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .spinner-box h2 {
+      color: var(--text);
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+    
+    .wheel-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 20px auto;
+    }
+    
+    #wheel {
+      border-radius: 50%;
+      box-shadow: 0 4px 15px #ded0bb;
+      background: var(--light);
+    }
+    
+    .spin-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    .random-btn {
+      background: var(--primary);
+      color: white;
+      font-size: 1.1rem;
+      padding: 12px 24px;
+    }
+    
+    .random-btn:hover {
+      background: var(--secondary);
+    }
+    
+    #result {
+      font-size: 1.2rem;
+      margin-top: 15px;
+      font-weight: bold;
+      color: var(--text);
+      min-height: 30px;
+      padding: 10px;
+      background: rgba(0, 132, 255, 0.1);
+      border-radius: 8px;
+      width: 100%;
+    }
+    
+    /* Completed Activities Section */
+    .completed-section {
+      background: var(--light);
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .completed-section h3 {
+      color: var(--text);
+      margin-bottom: 15px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .completed-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    
+    .completed-item {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 15px;
+      position: relative;
+    }
+    
+    .completed-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .completed-item-title {
+      font-weight: bold;
+      color: var(--text);
+      flex: 1;
+      margin-right: 10px;
+    }
+    
+    .completed-item-category {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    
+    .completed-item-date {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 10px;
+    }
+    
+    .rating-container {
+      display: flex;
+      gap: 5px;
+      margin: 10px 0;
+    }
+    
+    .rating-star {
+      color: #777;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-size: 1.2rem;
+    }
+    
+    .rating-star.active {
+      color: #FFD700;
+    }
+    
+    .completed-item-image {
+      width: 100%;
+      border-radius: 6px;
+      margin-top: 10px;
+      max-height: 150px;
+      object-fit: cover;
+    }
+    
+    .completed-item-actions {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+    }
+    
+    .add-image-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      flex: 1;
+    }
+    
+    .add-image-btn:hover {
+      background: var(--secondary);
+    }
+    
+    .delete-completed-btn {
+      background: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    
+    .delete-completed-btn:hover {
+      background: #962d22;
+    }
+    
+    .empty-completed {
+      text-align: center;
+      padding: 30px;
+      color: #777;
+      grid-column: 1 / -1;
+    }
+    
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background: var(--light);
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .modal-header h2 {
+      color: var(--text);
+      font-size: 1.5rem;
+    }
+    
+    .close-modal {
+      color: var(--text);
+      font-size: 28px;
+      cursor: pointer;
+    }
+    
+    .auth-form h3 {
+      color: var(--text);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      font-size: 16px;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    
+    .btn-primary:hover {
+      background: var(--secondary);
+    }
+    
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+      color: #777;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+      }
+      
+      .wheel-container {
+        width: 300px;
+        height: 300px;
+      }
+      
+      #wheel {
+        width: 300px;
+        height: 300px;
+      }
+      
+      .completed-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .user-info {
+        position: relative;
+        top: 0;
+        right: 0;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+    }
+    
+    /* Animation for new items */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .category-box, .spinner-box, .completed-item {
+      animation: fadeIn 0.5s ease;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--secondary);
+    }
+  </style>
+</head>
+<body>
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Welcome to Your Activities Board</h2>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="loginForm" class="auth-form">
+          <h3>Login</h3>
+          <div class="form-group">
+            <input type="text" id="loginUsername" placeholder="Username" />
+          </div>
+          <div class="form-group">
+            <input type="password" id="loginPassword" placeholder="Password" />
+          </div>
+          <button id="loginBtn" class="btn btn-primary">Login</button>
+          <p style="text-align: center; margin-top: 15px;">
+            Don't have an account? <a href="#" id="showRegister">Register</a>
+          </p>
+        </div>
+        
+        <div id="registerForm" class="auth-form" style="display: none;">
+          <h3>Create Account</h3>
+          <div class="form-group">
+            <input type="text" id="registerUsername" placeholder="Choose a username" />
+          </div>
+          <div class="form-group">
+            <input type="password" id="registerPassword" placeholder="Choose a password" />
+          </div>
+          <div class="form-group">
+            <input type="text" id="registerCoupleName1" placeholder="First partner name" value="Captain Paradox" />
+          </div>
+          <div class="form-group">
+            <input type="text" id="registerCoupleName2" placeholder="Second partner name" value="Yiyo" />
+          </div>
+          <button id="registerBtn" class="btn btn-primary">Create Account</button>
+          <p style="text-align: center; margin-top: 15px;">
+            Already have an account? <a href="#" id="showLogin">Login</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-container" style="display: none;">
+    <!-- User Info -->
+    <div class="user-info">
+      <span id="userGreeting"></span>
+      <button id="logoutBtn" class="btn btn-secondary" style="margin-left: 10px;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+      <h1> 🍍    Welcome To 🍈</h1>
+      <p> Jasmin & Melon Activities Board </p>
+      <div class="couple-names">
+        <div class="name-tag">Captain Paradox</div>
+        <div class="name-tag">Yiyo</div>
+      </div>
+    </header>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <section class="categories-section">
+        <div class="add-category">
+          <input id="newCategoryInput" type="text" placeholder="New category name..." />
+          <input id="newCategoryImage" type="file" accept="image/*" style="display:none;" />
+          <label for="newCategoryImage" class="file-btn"><i class="fas fa-image"></i> Image</label>
+          <button onclick="addCategory()" class="btn"><i class="fas fa-plus"></i> Add Category</button>
+        </div>
+        
+        <div class="categories-container" id="categoriesContainer">
+          <!-- Category boxes will be generated here -->
+        </div>
+      </section>
+      
+      <section class="spinner-section">
+        <div class="spinner-box">
+          <h2><i class="fas fa-dice"></i> WHAT'S FOR TODAY?</h2>
+          
+          <div class="input-section">
+            <select id="categorySelect"></select>
+          </div>
+          
+          <div class="wheel-container">
+            <canvas id="wheel" width="400" height="400"></canvas>
+          </div>
+          
+          <div class="spin-container">
+            <button id="spin" class="btn random-btn"><i class="fas fa-redo"></i> Spin the Wheel</button>
+          </div>
+          
+          <p id="result"></p>
+        </div>
+        
+        <div class="completed-section">
+          <h3><i class="fas fa-check-circle"></i> Completed Activities</h3>
+          <div class="completed-list" id="completedList">
+            <!-- Completed activities will be displayed here -->
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <footer class="footer">
+      <p>Made with <i class="fas fa-heart" style="color: #ff6b6b;"></i> for Captain Paradox & Yiyo</p>
+    </footer>
+  </div>
+
+  <script>
+    // ==================== CONFIGURATION ====================
+    // Change this URL when you deploy your backend
+    const API_BASE_URL = 'http://localhost:5000/api';
+    // For production, it will look like: 'https://your-app.onrender.com/api'
+    
+    // ==================== API SERVICE ====================
+    const api = {
+      // Auth
+      async register(userData) {
+        const response = await fetch(`${API_BASE_URL}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData)
+        });
+        return response.json();
+      },
+      
+      async login(credentials) {
+        const response = await fetch(`${API_BASE_URL}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(credentials)
+        });
+        return response.json();
+      },
+      
+      async getData(token) {
+        const response = await fetch(`${API_BASE_URL}/data`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        return response.json();
+      },
+      
+      // Categories
+      async createCategory(categoryData, token) {
+        const response = await fetch(`${API_BASE_URL}/categories`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(categoryData)
+        });
+        return response.json();
+      },
+      
+      async updateCategory(id, categoryData, token) {
+        const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(categoryData)
+        });
+        return response.json();
+      },
+      
+      async deleteCategory(id, token) {
+        const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        return response.json();
+      },
+      
+      // Completed Activities
+      async createCompletedActivity(activityData, token) {
+        const response = await fetch(`${API_BASE_URL}/completed`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(activityData)
+        });
+        return response.json();
+      },
+      
+      async updateCompletedActivity(id, activityData, token) {
+        const response = await fetch(`${API_BASE_URL}/completed/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(activityData)
+        });
+        return response.json();
+      },
+      
+      async deleteCompletedActivity(id, token) {
+        const response = await fetch(`${API_BASE_URL}/completed/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        return response.json();
+      }
+    };
+    
+    // ==================== STATE MANAGEMENT ====================
+    let currentUser = null;
+    let token = null;
+    let categories = {};
+    let completedActivities = [];
+    let angle = 0;
+    let spinning = false;
+    
+    // ==================== DOM ELEMENTS ====================
+    const authModal = document.getElementById('authModal');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const userGreeting = document.getElementById('userGreeting');
+    const categoriesContainer = document.getElementById("categoriesContainer");
+    const categorySelect = document.getElementById("categorySelect");
+    const wheel = document.getElementById("wheel");
+    const ctx = wheel.getContext("2d");
+    const result = document.getElementById("result");
+    const completedList = document.getElementById("completedList");
+    const appContainer = document.querySelector('.app-container');
+    
+    // ==================== HELPER FUNCTIONS ====================
+    // Helper: convert file to Base64 Data URL
+    function fileToDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    
+    // ==================== APP INITIALIZATION ====================
+    async function initApp() {
+      // Check if user is logged in
+      const savedToken = localStorage.getItem('token');
+      const savedUser = localStorage.getItem('user');
+      
+      if (savedToken && savedUser) {
+        try {
+          token = savedToken;
+          currentUser = JSON.parse(savedUser);
+          showApp();
+          await loadData();
+        } catch (error) {
+          console.error('Failed to load saved session:', error);
+          showAuthModal();
+        }
+      } else {
+        showAuthModal();
+      }
+    }
+    
+    // Show authentication modal
+    function showAuthModal() {
+      authModal.style.display = 'flex';
+      appContainer.style.display = 'none';
+    }
+    
+    // Show main app
+    function showApp() {
+      authModal.style.display = 'none';
+      appContainer.style.display = 'flex';
+      
+      if (currentUser) {
+        userGreeting.textContent = `Hello, ${currentUser.username}!`;
+        // Update couple names in header
+        document.querySelector('.name-tag:nth-child(1)').textContent = currentUser.coupleName1 || 'Captain Paradox';
+        document.querySelector('.name-tag:nth-child(2)').textContent = currentUser.coupleName2 || 'Yiyo';
+      }
+    }
+    
+    // Load data from server
+    async function loadData() {
+      try {
+        const data = await api.getData(token);
+        
+        // Update local state
+        categories = data.categories || {};
+        completedActivities = data.completedActivities || [];
+        
+        // Render everything
+        renderCategories();
+        renderCompletedActivities();
+      } catch (error) {
+        console.error('Failed to load data:', error);
+        alert('Failed to load data. Please try logging in again.');
+        logout();
+      }
+    }
+    
+    // Login function
+    async function login(username, password) {
+      try {
+        const response = await api.login({ username, password });
+        
+        if (response.error) {
+          throw new Error(response.error);
+        }
+        
+        token = response.token;
+        currentUser = response.user;
+        
+        // Save to localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(currentUser));
+        
+        showApp();
+        await loadData();
+      } catch (error) {
+        alert(error.message || 'Login failed');
+      }
+    }
+    
+    // Register function
+    async function register(userData) {
+      try {
+        const response = await api.register(userData);
+        
+        if (response.error) {
+          throw new Error(response.error);
+        }
+        
+        token = response.token;
+        currentUser = response.user;
+        
+        // Save to localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(currentUser));
+        
+        showApp();
+        await loadData();
+      } catch (error) {
+        alert(error.message || 'Registration failed');
+      }
+    }
+    
+    // Logout function
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      currentUser = null;
+      token = null;
+      categories = {};
+      completedActivities = [];
+      showAuthModal();
+    }
+    
+    // ==================== CATEGORIES FUNCTIONS ====================
+    async function addCategory() {
+      const newCat = document.getElementById("newCategoryInput").value.trim();
+      const imgInput = document.getElementById("newCategoryImage");
+      const file = imgInput.files && imgInput.files[0];
+    
+      if (!newCat) return;
+      
+      let imageData = "";
+      if (file) {
+        try {
+          imageData = await fileToDataURL(file);
+        } catch (e) {
+          console.warn("Failed to read image file:", e);
+        }
+      }
+      
+      try {
+        const newCategory = await api.createCategory({
+          name: newCat,
+          image: imageData
+        }, token);
+        
+        // Update local state
+        categories[newCat] = {
+          _id: newCategory._id,
+          items: [],
+          image: imageData
+        };
+        
+        document.getElementById("newCategoryInput").value = "";
+        imgInput.value = "";
+        
+        renderCategories(newCat);
+      } catch (error) {
+        alert('Failed to create category');
+      }
+    }
+    
+    async function updateCategoryItems(catName) {
+      try {
+        const category = categories[catName];
+        if (!category || !category._id) return;
+        
+        await api.updateCategory(category._id, {
+          name: catName,
+          image: category.image,
+          items: category.items
+        }, token);
+      } catch (error) {
+        console.error('Failed to update category:', error);
+      }
+    }
+    
+    async function deleteCategory(catName) {
+      if (confirm(`Delete category "${catName}"?`)) {
+        try {
+          const category = categories[catName];
+          if (category && category._id) {
+            await api.deleteCategory(category._id, token);
+          }
+          delete categories[catName];
+          renderCategories();
+          drawWheel();
+        } catch (error) {
+          alert('Failed to delete category');
+        }
+      }
+    }
+    
+    // ==================== ACTIVITIES FUNCTIONS ====================
+    async function markAsCompleted(activity, category) {
+      try {
+        const newActivity = await api.createCompletedActivity({
+          activity,
+          category,
+          rating: 0
+        }, token);
+        
+        completedActivities.unshift(newActivity);
+        renderCompletedActivities();
+        
+        alert(`"${activity}" marked as completed!`);
+      } catch (error) {
+        alert('Failed to mark activity as completed');
+      }
+    }
+    
+    async function deleteCompletedActivity(id) {
+      if (confirm("Are you sure you want to remove this activity from your completed list?")) {
+        try {
+          await api.deleteCompletedActivity(id, token);
+          completedActivities = completedActivities.filter(activity => activity._id !== id);
+          renderCompletedActivities();
+        } catch (error) {
+          alert('Failed to delete activity');
+        }
+      }
+    }
+    
+    async function rateActivity(id, rating) {
+      try {
+        await api.updateCompletedActivity(id, { rating }, token);
+        const activity = completedActivities.find(a => a._id === id);
+        if (activity) activity.rating = rating;
+        renderCompletedActivities();
+      } catch (error) {
+        alert('Failed to update rating');
+      }
+    }
+    
+    async function addActivityImage(id, file) {
+      try {
+        const imageData = await fileToDataURL(file);
+        await api.updateCompletedActivity(id, { image: imageData }, token);
+        
+        const activity = completedActivities.find(a => a._id === id);
+        if (activity) {
+          activity.image = imageData;
+        }
+        renderCompletedActivities();
+      } catch (error) {
+        alert("Failed to add image. Please try again.");
+      }
+    }
+    
+    // ==================== RENDER FUNCTIONS ====================
+    // Render categories boxes + dropdown
+    async function renderCategories(selectValueToKeep = null) {
+      categoriesContainer.innerHTML = "";
+      categorySelect.innerHTML = "";
+    
+      // If there are no categories, show message and stop
+      if (Object.keys(categories).length === 0) {
+        ctx.clearRect(0, 0, wheel.width, wheel.height);
+        result.textContent = "Add a category to start!";
+        document.getElementById("spin").disabled = true;
+        
+        // Show empty state message
+        const emptyState = document.createElement('div');
+        emptyState.className = 'empty-state';
+        emptyState.innerHTML = `
+          <div style="text-align: center; padding: 30px; color: #777;">
+            <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 15px;"></i>
+            <h3>No categories yet</h3>
+            <p>Add your first category to get started!</p>
+          </div>
+        `;
+        categoriesContainer.appendChild(emptyState);
+        return;
+      } else {
+        document.getElementById("spin").disabled = false;
+        result.textContent = "";
+      }
+    
+      for (let cat of Object.keys(categories)) {
+        // Dropdown
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = cat;
+        categorySelect.appendChild(opt);
+    
+        // Category box
+        const box = document.createElement("div");
+        box.className = "category-box";
+        if (categories[cat].image) box.style.backgroundImage = `url(${categories[cat].image})`;
+    
+        // Header: title + delete button
+        const header = document.createElement("div");
+        header.style.display = "flex";
+        header.style.justifyContent = "space-between";
+        header.style.alignItems = "center";
+    
+        const title = document.createElement("h2");
+        title.textContent = cat;
+    
+        const delCatBtn = document.createElement("button");
+        delCatBtn.innerHTML = "<i class='fas fa-trash'></i>";
+        delCatBtn.className = "delete-cat-btn";
+        delCatBtn.onclick = () => deleteCategory(cat);
+    
+        header.appendChild(title);
+        header.appendChild(delCatBtn);
+        box.appendChild(header);
+    
+        // Input + add item button
+        const inputSec = document.createElement("div");
+        inputSec.className = "input-section";
+    
+        const input = document.createElement("input");
+        input.placeholder = "Add item...";
+        const btn = document.createElement("button");
+        btn.innerHTML = "<i class='fas fa-plus'></i> Add";
+        btn.className = "btn";
+        btn.onclick = async () => {
+          const val = input.value.trim();
+          if (val && !categories[cat].items.includes(val)) {
+            categories[cat].items.push(val);
+            await updateCategoryItems(cat);
+            renderCategories(cat);
+            drawWheel();
+          }
+          input.value = "";
+        };
+    
+        inputSec.appendChild(input);
+        inputSec.appendChild(btn);
+    
+        // Items list
+        const ul = document.createElement("ul");
+        ul.className = "item-list";
+        
+        if (categories[cat].items && categories[cat].items.length > 0) {
+          categories[cat].items.forEach((item, idx) => {
+            const li = document.createElement("li");
+            
+            const itemText = document.createElement("span");
+            itemText.textContent = item;
+            
+            const actions = document.createElement("div");
+            actions.className = "item-actions";
+            
+            const completeBtn = document.createElement("button");
+            completeBtn.innerHTML = "<i class='fas fa-check'></i>";
+            completeBtn.className = "complete-btn";
+            completeBtn.title = "Mark as completed";
+            completeBtn.onclick = () => {
+              markAsCompleted(item, cat);
+            };
+            
+            const del = document.createElement("button");
+            del.innerHTML = "<i class='fas fa-times'></i>";
+            del.className = "delete-btn";
+            del.onclick = async () => {
+              categories[cat].items.splice(idx, 1);
+              await updateCategoryItems(cat);
+              renderCategories(cat);
+              drawWheel();
+            };
+            
+            actions.appendChild(completeBtn);
+            actions.appendChild(del);
+            
+            li.appendChild(itemText);
+            li.appendChild(actions);
+            ul.appendChild(li);
+          });
+        } else {
+          const li = document.createElement("li");
+          li.textContent = "No activities yet. Add some!";
+          li.style.color = "#777";
+          ul.appendChild(li);
+        }
+    
+        box.appendChild(inputSec);
+        box.appendChild(ul);
+    
+        categoriesContainer.appendChild(box);
+      }
+    
+      // Keep selection stable
+      if (selectValueToKeep && categories[selectValueToKeep]) {
+        categorySelect.value = selectValueToKeep;
+      }
+    
+      // If nothing selected, pick first
+      if (!categorySelect.value) {
+        const first = Object.keys(categories)[0];
+        if (first) categorySelect.value = first;
+      }
+    
+      drawWheel();
+    }
+    
+    // Render completed activities
+    function renderCompletedActivities() {
+      completedList.innerHTML = "";
+      
+      if (completedActivities.length === 0) {
+        const emptyMsg = document.createElement("div");
+        emptyMsg.className = "empty-completed";
+        emptyMsg.innerHTML = `
+          <i class="fas fa-trophy" style="font-size: 48px; margin-bottom: 15px;"></i>
+          <h3>No completed activities yet</h3>
+          <p>Complete some activities and they will appear here!</p>
+        `;
+        completedList.appendChild(emptyMsg);
+        return;
+      }
+      
+      completedActivities.forEach(activity => {
+        const activityEl = document.createElement("div");
+        activityEl.className = "completed-item";
+        activityEl.dataset.id = activity._id;
+        
+        const formattedDate = new Date(activity.date).toLocaleDateString();
+        
+        activityEl.innerHTML = `
+          <div class="completed-item-header">
+            <div class="completed-item-title">${activity.activity}</div>
+            <div class="completed-item-category">${activity.category}</div>
+          </div>
+          <div class="completed-item-date">Completed on: ${formattedDate}</div>
+          <div>Rate this activity:</div>
+          <div class="rating-container">
+            ${Array.from({length: 5}, (_, i) => 
+              `<span class="rating-star ${i < activity.rating ? 'active' : ''}" 
+                    data-id="${activity._id}" 
+                    data-rating="${i + 1}">★</span>`
+            ).join('')}
+          </div>
+          ${activity.image ? 
+            `<img src="${activity.image}" class="completed-item-image" alt="${activity.activity}">` : 
+            `<input type="file" accept="image/*" class="activity-image-input" data-id="${activity._id}" style="display: none;">`
+          }
+          <div class="completed-item-actions">
+            ${!activity.image ? 
+              `<button class="add-image-btn" data-id="${activity._id}">
+                 <i class="fas fa-camera"></i> Add Photo
+               </button>` : 
+              `<button class="add-image-btn" data-id="${activity._id}">
+                 <i class="fas fa-camera"></i> Change Photo
+               </button>`
+            }
+            <button class="delete-completed-btn" data-id="${activity._id}">
+              <i class="fas fa-trash"></i> Remove
+            </button>
+          </div>
+        `;
+        
+        completedList.appendChild(activityEl);
+      });
+      
+      // Add event listeners for rating stars
+      document.querySelectorAll('.rating-star').forEach(star => {
+        star.addEventListener('click', function() {
+          const id = this.getAttribute('data-id');
+          const rating = parseInt(this.getAttribute('data-rating'));
+          rateActivity(id, rating);
+        });
+      });
+      
+      // Add event listeners for image buttons
+      document.querySelectorAll('.add-image-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = this.getAttribute('data-id');
+          document.querySelector(`.activity-image-input[data-id="${id}"]`).click();
+        });
+      });
+      
+      // Add event listeners for image inputs
+      document.querySelectorAll('.activity-image-input').forEach(input => {
+        input.addEventListener('change', function() {
+          const id = this.getAttribute('data-id');
+          const file = this.files[0];
+          if (file) {
+            addActivityImage(id, file);
+          }
+        });
+      });
+      
+      // Add event listeners for delete buttons
+      document.querySelectorAll('.delete-completed-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = this.getAttribute('data-id');
+          deleteCompletedActivity(id);
+        });
+      });
+    }
+    
+    // ==================== WHEEL FUNCTIONS ====================
+    // Draw wheel for selected category
+    function drawWheel() {
+      const cat = categorySelect.value;
+      if (!cat || !categories[cat]) {
+        ctx.clearRect(0, 0, wheel.width, wheel.height);
+        return;
+      }
+    
+      const items = categories[cat].items || [];
+      const slices = items.length;
+      ctx.clearRect(0, 0, wheel.width, wheel.height);
+      if (slices === 0) return;
+    
+      const sliceAngle = (2 * Math.PI) / slices;
+    
+      // Draw wheel with alternating colors
+      for (let i = 0; i < slices; i++) {
+        const startAngle = i * sliceAngle;
+        const endAngle = (i + 1) * sliceAngle;
+    
+        ctx.fillStyle = i % 2 === 0 ? "var(--primary)" : "var(--secondary)";
+        ctx.beginPath();
+        ctx.moveTo(wheel.width / 2, wheel.height / 2);
+        ctx.arc(wheel.width / 2, wheel.height / 2, wheel.width / 2, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fill();
+    
+        ctx.save();
+        ctx.translate(wheel.width / 2, wheel.height / 2);
+        ctx.rotate(startAngle + sliceAngle / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "white";
+        ctx.font = "16px 'Segoe UI', sans-serif";
+        ctx.fillText(items[i], wheel.width / 2 - 10, 5);
+        ctx.restore();
+      }
+    
+      // Draw center circle
+      ctx.fillStyle = "var(--accent)";
+      ctx.beginPath();
+      ctx.arc(wheel.width / 2, wheel.height / 2, 20, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    
+    // Spin logic
+    function spinWheel() {
+      if (spinning) return;
+      spinning = true;
+    
+      const cat = categorySelect.value;
+      const items = (categories[cat] && categories[cat].items) || [];
+      if (items.length === 0) {
+        alert("This category has no items!");
+        spinning = false;
+        return;
+      }
+    
+      const spinDuration = 3000;
+      const spinAngle = Math.random() * 360 + 720;
+      const start = Date.now();
+    
+      function animate() {
+        const elapsed = Date.now() - start;
+        if (elapsed < spinDuration) {
+          angle += (spinAngle / spinDuration) * 20;
+          ctx.save();
+          ctx.clearRect(0, 0, wheel.width, wheel.height);
+          ctx.translate(wheel.width / 2, wheel.height / 2);
+          ctx.rotate((angle * Math.PI) / 180);
+          ctx.translate(-wheel.width / 2, -wheel.height / 2);
+          drawWheel();
+          ctx.restore();
+          requestAnimationFrame(animate);
+        } else {
+          spinning = false;
+          stopWheel();
+        }
+      }
+      animate();
+    }
+    
+    function stopWheel() {
+      const cat = categorySelect.value;
+      const items = (categories[cat] && categories[cat].items) || [];
+      const slices = items.length;
+      if (slices === 0) return;
+    
+      const sliceAngle = 360 / slices;
+      const currentAngle = (angle % 360 + 360) % 360;
+      const index = Math.floor((slices - currentAngle / sliceAngle) % slices);
+    
+      result.textContent = `🎉 Result: ${items[index]}`;
+      launchConfetti();
+    }
+    
+    // Confetti function
+    function launchConfetti() {
+      const particles = [];
+      const colors = ["#1e5475", "#547090", "#7C4DFF", "#90be6d", "#577590", "#0084FF", "#FFB6C1"];
+      const particleCount = 150;
+    
+      // Create particles
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * wheel.width,
+          y: Math.random() * -wheel.height,
+          r: Math.random() * 6 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10 - 5,
+          tiltSpeed: Math.random() * 0.1 + 0.05,
+          speed: Math.random() * 3 + 2,
+        });
+      }
+    
+      function animateConfetti() {
+        ctx.clearRect(0, 0, wheel.width, wheel.height);
+        drawWheel(); // Keep wheel visible
+        particles.forEach((p) => {
+          ctx.beginPath();
+          ctx.lineWidth = p.r;
+          ctx.strokeStyle = p.color;
+          ctx.moveTo(p.x + p.tilt, p.y);
+          ctx.lineTo(p.x, p.y + p.tilt + 5);
+          ctx.stroke();
+    
+          p.y += p.speed;
+          p.tilt += p.tiltSpeed;
+    
+          // Reset particle to top when off screen
+          if (p.y > wheel.height) {
+            p.y = -10;
+            p.x = Math.random() * wheel.width;
+            p.tilt = Math.random() * 10 - 5;
+          }
+        });
+    
+        // Continue animation while particles exist
+        if (particles.length > 0) requestAnimationFrame(animateConfetti);
+      }
+    
+      animateConfetti();
+    }
+    
+    // ==================== EVENT LISTENERS ====================
+    document.getElementById("spin").addEventListener("click", spinWheel);
+    categorySelect.addEventListener("change", () => {
+      angle = 0;
+      result.textContent = "";
+      drawWheel();
+    });
+    
+    // Auth event listeners
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const username = document.getElementById('loginUsername').value;
+      const password = document.getElementById('loginPassword').value;
+      if (!username || !password) {
+        alert('Please enter username and password');
+        return;
+      }
+      login(username, password);
+    });
+    
+    document.getElementById('registerBtn').addEventListener('click', () => {
+      const username = document.getElementById('registerUsername').value;
+      const password = document.getElementById('registerPassword').value;
+      const coupleName1 = document.getElementById('registerCoupleName1').value;
+      const coupleName2 = document.getElementById('registerCoupleName2').value;
+      
+      if (!username || !password) {
+        alert('Please enter username and password');
+        return;
+      }
+      
+      register({ username, password, coupleName1, coupleName2 });
+    });
+    
+    document.getElementById('showRegister').addEventListener('click', (e) => {
+      e.preventDefault();
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+    });
+    
+    document.getElementById('showLogin').addEventListener('click', (e) => {
+      e.preventDefault();
+      registerForm.style.display = 'none';
+      loginForm.style.display = 'block';
+    });
+    
+    document.querySelector('.close-modal').addEventListener('click', showAuthModal);
+    logoutBtn.addEventListener('click', logout);
+    
+    // ==================== INITIALIZE APP ====================
+    initApp();
+  </script>
+</body>
+</html>
